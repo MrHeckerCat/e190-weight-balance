@@ -1,16 +1,18 @@
 const CACHE_NAME = 'e190-wb-v1';
 const assets = [
-    '/',
-    '/index.html',
-    '/Rajdhani-Regular.ttf',
-    '/icons/icon-72x72.png',
-    '/icons/icon-96x96.png',
-    '/icons/icon-128x128.png',
-    '/icons/icon-144x144.png',
-    '/icons/icon-152x152.png',
-    '/icons/icon-192x192.png',
-    '/icons/icon-384x384.png',
-    '/icons/icon-512x512.png'
+    '/e190-weight-balance/',
+    '/e190-weight-balance/index.html',
+    '/e190-weight-balance/manifest.json',
+    '/e190-weight-balance/sw.js',
+    '/e190-weight-balance/Rajdhani-Regular.ttf',
+    '/e190-weight-balance/icons/icon-72x72.png',
+    '/e190-weight-balance/icons/icon-96x96.png',
+    '/e190-weight-balance/icons/icon-128x128.png',
+    '/e190-weight-balance/icons/icon-144x144.png',
+    '/e190-weight-balance/icons/icon-152x152.png',
+    '/e190-weight-balance/icons/icon-192x192.png',
+    '/e190-weight-balance/icons/icon-384x384.png',
+    '/e190-weight-balance/icons/icon-512x512.png'
 ];
 
 // Install event
@@ -34,11 +36,25 @@ self.addEventListener('activate', evt => {
     );
 });
 
-// Fetch event
+// Fetch event with improved error handling
 self.addEventListener('fetch', evt => {
     evt.respondWith(
-        caches.match(evt.request).then(cacheRes => {
-            return cacheRes || fetch(evt.request);
-        })
+        caches.match(evt.request)
+            .then(cacheRes => {
+                return cacheRes || fetch(evt.request)
+                    .then(fetchRes => {
+                        return caches.open(CACHE_NAME)
+                            .then(cache => {
+                                cache.put(evt.request.url, fetchRes.clone());
+                                return fetchRes;
+                            });
+                    });
+            })
+            .catch(() => {
+                // Fallback for offline functionality
+                if (evt.request.url.indexOf('.html') > -1) {
+                    return caches.match('/e190-weight-balance/index.html');
+                }
+            })
     );
 });
