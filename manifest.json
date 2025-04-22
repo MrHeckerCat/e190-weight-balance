@@ -1,7 +1,7 @@
 {
     "name": "E190 Weight & Balance",
     "short_name": "E190 WB",
-    "start_url": "index.html",
+    "start_url": "/e190-weight-balance/index.html",
     "display": "standalone",
     "background_color": "#0a192e",
     "theme_color": "#0a192e",
