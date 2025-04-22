@@ -9,7 +9,6 @@
     <link rel="apple-touch-icon" href="icons/icon-96x96.png">
     <meta name="apple-mobile-web-app-status-bar" content="#ffffff">
 </head>
-
 <style>
     * {
         padding: 0px;
@@ -39,15 +38,15 @@
     .wrapper {
         position: absolute;
         left: 50%;
-        max-width: 374px;
+        max-width: 500px; /* Increased from 374px */
         height: 1085px;
-        margin-left: -187px;
+        margin-left: -250px; /* Adjusted to half of max-width */
         margin-top: 10px;
     }
 
     .relative {
         position: relative;
-        width: 374px;
+        width: 500px; /* Increased from 374px */
         height: 1085px;
         background: rgba(23, 43, 70, 1);
     }
@@ -72,12 +71,12 @@
         user-select: none;
         position: absolute;
         top: 700px;
-        left: 6px;
+        left: 70px; /* Adjusted for centering */
         border: 1px solid #000000;
     }
 
     input {
-        width: 57px;
+        width: 60px;
         padding: 1px 1px 1px 3px;
         background: rgb(98, 116, 145);
         color: rgb(255, 255, 255);
@@ -85,68 +84,43 @@
         position: absolute;
     }
 
-    select {
-        width: 56px;
-        padding: 1px;
-        background: rgb(98, 116, 145);
-        color: #ffffff;
-        font-size: 16px;
-    }
-
-    .slider {
-        width: 100px;
-        height: 5px;
-        background: #d3d3d3;
-        outline: none;
-        opacity: 0.7;
-        -webkit-transition: .2s;
-        transition: opacity .2s;
-    }
-
-    .slider::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        appearance: none;
-        width: 10px;
-        height: 10px;
-        background: #04AA6D;
-        cursor: pointer;
-    }
-
-    .slider::-moz-range-thumb {
-        width: 10px;
-        height: 10px;
-        background: #04AA6D;
-        cursor: pointer;
-    }
-
-    /* Chrome, Safari, Edge, Opera */
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-
     /* Position styles */
     .label-standard {
-        left: 5px;
+        left: 20px; /* Increased from 5px */
     }
 
     .input-standard {
-        left: 85px;
+        left: 120px; /* Increased from 85px */
     }
 
     .label-cabin {
-        left: 180px;
+        left: 240px; /* Increased from 180px */
     }
 
     .input-cabin {
-        left: 260px;
+        left: 320px; /* Increased from 260px */
     }
 
     .input-cabin-child {
-        left: 320px;
+        left: 390px; /* Increased from 320px */
     }
 
+    .cabin-info {
+        position: absolute;
+        left: 460px; /* Increased from 380px */
+        font-size: 14px;
+    }
+
+    /* Submit button adjustment */
+    .submit-button {
+        position: absolute;
+        top: 660px;
+        left: 20px; /* Adjusted */
+        height: 30px;
+        width: 460px; /* Increased from 364px */
+    }
+
+    /* Rest of your styles remain the same */
     .row-1 { top: 13px; }
     .row-2 { top: 44px; }
     .row-3 { top: 75px; }
@@ -157,47 +131,43 @@
     .row-8 { top: 224px; }
     .row-9 { top: 254px; }
 
-    .cabin-info {
-        position: absolute;
-        left: 380px;
-        font-size: 14px;
-    }
-
-    .error-message {
-        color: #ff2600;
-        font-size: 14px;
-        left: 150px;
+    /* Calculation results section adjustments */
+    .calculation-results {
+        position: relative;
+        padding: 20px;
     }
 
     .calculation-result {
         font-size: 14px;
     }
 
-    .highlighted-result {
-        color: rgb(6, 248, 200);
+    /* Error messages adjustment */
+    .error-message {
+        color: #ff2600;
+        font-size: 14px;
+        left: 200px; /* Adjusted from 150px */
     }
 
-    .submit-button {
-        position: absolute;
-        top: 660px;
-        left: 5px;
-        height: 30px;
-        width: 364px;
-    }
-
-    .copyright {
-        position: absolute;
-        top: 1063px;
-        left: 90px;
-        font-size: 16px;
-    }
-
+    /* Warning text adjustment */
     .warning-text {
         position: absolute;
         top: 615px;
-        left: 10px;
+        left: 30px; /* Adjusted */
         font-size: 20px;
         color: rgb(221, 219, 87);
+    }
+
+    /* Copyright adjustment */
+    .copyright {
+        position: absolute;
+        top: 1063px;
+        left: 150px; /* Adjusted */
+        font-size: 16px;
+    }
+
+    /* Additional styles for calculation results */
+    .highlighted-result {
+        color: rgb(6, 248, 200);
     }
 </style>
 <body>
