@@ -1,0 +1,630 @@
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WBP</title>
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json" crossorigin="use-credentials">
+    <link rel="apple-touch-icon" href="icons/icon-96x96.png">
+    <meta name="apple-mobile-web-app-status-bar" content="#ffffff">
+</head>
+
+<style>
+    * {
+        padding: 0px;
+        margin: 0px;
+        box-sizing: border-box;
+        font-family: "Rajdhani";
+    }
+
+    body {
+        background: #0a192e;
+        color: #c8d7f4;
+    }
+
+    *:focus {
+        outline: none;
+    }
+
+    input, textarea, button, select, a {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+    }
+
+    @font-face {
+        font-family: Rajdhani;
+        src: url(Rajdhani-Regular.ttf);
+    }
+
+    .wrapper {
+        position: absolute;
+        left: 50%;
+        max-width: 374px;
+        height: 1085px;
+        margin-left: -187px;
+        margin-top: 10px;
+    }
+
+    .relative {
+        position: relative;
+        width: 374px;
+        height: 1085px;
+        background: rgba(23, 43, 70, 1);
+    }
+
+    p {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        position: absolute;
+        font-size: 16px;
+    }
+
+    #myCanvas {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        position: absolute;
+        top: 700px;
+        left: 6px;
+        border: 1px solid #000000;
+    }
+
+    input {
+        width: 57px;
+        padding: 1px 1px 1px 3px;
+        background: rgb(98, 116, 145);
+        color: rgb(255, 255, 255);
+        font-size: 16px;
+        position: absolute;
+    }
+
+    select {
+        width: 56px;
+        padding: 1px;
+        background: rgb(98, 116, 145);
+        color: #ffffff;
+        font-size: 16px;
+    }
+
+    .slider {
+        width: 100px;
+        height: 5px;
+        background: #d3d3d3;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+    }
+
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 10px;
+        height: 10px;
+        background: #04AA6D;
+        cursor: pointer;
+    }
+
+    .slider::-moz-range-thumb {
+        width: 10px;
+        height: 10px;
+        background: #04AA6D;
+        cursor: pointer;
+    }
+
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Position styles */
+    .label-standard {
+        left: 5px;
+    }
+
+    .input-standard {
+        left: 85px;
+    }
+
+    .label-cabin {
+        left: 180px;
+    }
+
+    .input-cabin {
+        left: 260px;
+    }
+
+    .input-cabin-child {
+        left: 320px;
+    }
+
+    .row-1 { top: 13px; }
+    .row-2 { top: 44px; }
+    .row-3 { top: 75px; }
+    .row-4 { top: 104px; }
+    .row-5 { top: 134px; }
+    .row-6 { top: 164px; }
+    .row-7 { top: 194px; }
+    .row-8 { top: 224px; }
+    .row-9 { top: 254px; }
+
+    .cabin-info {
+        position: absolute;
+        left: 380px;
+        font-size: 14px;
+    }
+
+    .error-message {
+        color: #ff2600;
+        font-size: 14px;
+        left: 150px;
+    }
+
+    .calculation-result {
+        font-size: 14px;
+    }
+
+    .highlighted-result {
+        color: rgb(6, 248, 200);
+    }
+
+    .submit-button {
+        position: absolute;
+        top: 660px;
+        left: 5px;
+        height: 30px;
+        width: 364px;
+    }
+
+    .copyright {
+        position: absolute;
+        top: 1063px;
+        left: 90px;
+        font-size: 16px;
+    }
+
+    .warning-text {
+        position: absolute;
+        top: 615px;
+        left: 10px;
+        font-size: 20px;
+        color: rgb(221, 219, 87);
+    }
+</style>
+<body>
+    <div class="wrapper">
+        <div class="relative">
+            <form id="form">
+                <!-- Left Column - Basic Weights -->
+                <p class="label-standard row-1">DOW</p>
+                <input class="input-standard row-1" id='dow' type="number" min="28000" max="30000" required autocomplete="off">
+
+                <p class="label-standard row-2">TO FUEL</p>
+                <input class="input-standard row-2" id='tof' type="number" min="3000" max="12800" required autocomplete="off">
+
+                <p class="label-standard row-3">TRIP</p>
+                <input class="input-standard row-3" id='trip' type="number" min="1000" max="12800" required autocomplete="off">
+
+                <p class="label-standard row-4">ADULT</p>
+                <input class="input-standard row-4" id='adult' type="number" min="0" max="106" autocomplete="off">
+
+                <p class="label-standard row-5">CHILD</p>
+                <input class="input-standard row-5" id='child' type="number" min="0" max="106" autocomplete="off">
+
+                <p class="label-standard row-6">BAG.</p>
+                <input class="input-standard row-6" id='bag' type="number" min="0" max="3500" autocomplete="off">
+
+                <p class="label-standard row-7">CARGO</p>
+                <input class="input-standard row-7" id='cargo' type="number" min="0" max="3500" autocomplete="off">
+
+                <p class="label-standard row-8">MAIL</p>
+                <input class="input-standard row-8" id='mail' type="number" min="0" max="3500" autocomplete="off">
+
+                <p class="label-standard row-9">PCS</p>
+                <input class="input-standard row-9" id='pcs' type="number" min="0" autocomplete="off">
+
+                <!-- Right Column - Distribution -->
+                <p class="label-cabin row-1">DOI</p>
+                <input class="input-cabin row-1" type="number" id='doi' min="65" max="85" step=0.1 required autocomplete="off">
+
+                <p class="label-cabin row-2">FWD CRG</p>
+                <input class="input-cabin row-2" type="number" id='fwdCargo' min="0" max="1850" autocomplete="off">
+                <p id="fwdPcs" class="highlighted-result" style="top: 45px; left: 325px;">0</p>
+
+                <p class="label-cabin row-3">AFT CRG</p>
+                <input class="input-cabin row-3" type="number" id='aftCargo' min="0" max="1650" value="0" disabled>
+                <p id="aftPcs" class="highlighted-result" style="top: 75px; left: 325px;">0</p>
+
+                <!-- Cabin Distribution with Child Inputs -->
+                <p class="label-cabin row-4">CAB A - 34</p>
+                <input class="input-cabin row-4" type="number" id='cabA' min="0" max="34" autocomplete="off" placeholder="ADL">
+                <input class="input-cabin-child row-4" type="number" id='cabAChild' min="0" max="34" autocomplete="off" placeholder="CHD">
+                <p class="cabin-info row-4">R 14-22</p>
+
+                <p class="label-cabin row-5">CAB B - 36</p>
+                <input class="input-cabin row-5" type="number" id='cabB' min="0" max="36" autocomplete="off" placeholder="ADL">
+                <input class="input-cabin-child row-5" type="number" id='cabBChild' min="0" max="36" autocomplete="off" placeholder="CHD">
+                <p class="cabin-info row-5">R 23-31</p>
+
+                <p class="label-cabin row-6">CAB C - 36</p>
+                <input class="input-cabin row-6" type="number" id='cabC' min="0" max="36" autocomplete="off" placeholder="ADL">
+                <input class="input-cabin-child row-6" type="number" id='cabCChild' min="0" max="36" autocomplete="off" placeholder="CHD">
+                <p class="cabin-info row-6">R 32-40</p>
+
+                <!-- Results Section -->
+                <div class="calculation-results">
+                    <p class="calculation-result" style="top: 280px;">ALLOWED WEIGHT:</p>
+                    <p class="calculation-result" style="top: 300px;">ALLOWED WEIGHT:</p>
+                    <p class="calculation-result" style="top: 320px;">ALLOWED WEIGHT:</p>
+
+                    <p class="calculation-result" style="top: 280px; left: 130px;">ZFW:</p>
+                    <p id="allZfw" class="calculation-result" style="top: 280px; left: 170px;">40900</p>
+
+                    <p class="calculation-result" style="top: 300px; left: 130px;">TOW:</p>
+                    <p id="allTow" class="calculation-result" style="top: 300px; left: 170px;">51800</p>
+
+                    <p class="calculation-result" style="top: 320px; left: 130px;">LW:</p>
+                    <p id="allLw" class="calculation-result" style="top: 320px; left: 170px;">44000</p>
+
+                    <!-- Additional calculation results -->
+                    <p class="calculation-result" style="top: 340px;">OPERATING WEIGHT:</p>
+                    <p id="oprWgt" class="calculation-result" style="top: 340px; left: 170px;">0</p>
+
+                    <p class="calculation-result" style="top: 360px;">ALLOWED TRAFIC LOAD:</p>
+                    <p id="allTrfLoad" class="calculation-result" style="top: 360px; left: 170px;">0</p>
+
+                    <p class="calculation-result" style="top: 380px;">TOTAL PASSNG. WGHT:</p>
+                    <p id="ttlPaxWgt" class="calculation-result" style="top: 380px; left: 170px;">0</p>
+
+                    <p class="calculation-result" style="top: 400px;">TOTAL B.C.M WGHT:</p>
+                    <p id="ttlBagCargoMail" class="calculation-result" style="top: 400px; left: 170px;">0</p>
+
+                    <p class="calculation-result" style="top: 420px;">TOTAL TRAFIC LOAD:</p>
+                    <p id="ttlTrafLoad" class="calculation-result" style="top: 420px; left: 170px;">0</p>
+
+                    <p class="highlighted-result" style="top: 440px;">ZERO FUEL WEIGHT:</p>
+                    <p id="zeroFuelWght" class="highlighted-result" style="top: 440px; left: 170px;">0</p>
+
+                    <p class="calculation-result" style="top: 460px;">TAKE OFF WEIGHT:</p>
+                    <p id="takeOffWght" class="calculation-result" style="top: 460px; left: 170px;">0</p>
+
+                    <p class="calculation-result" style="top: 480px;">LANDING WEIGHT:</p>
+                    <p id="landingWght" class="calculation-result" style="top: 480px; left: 170px;">0</p>
+
+                    <!-- Balance Indices -->
+                    <p class="calculation-result" style="top: 440px; left: 230px;">LIZFW:</p>
+                    <p id="lizfw" class="calculation-result" style="top: 440px; left: 280px;">0</p>
+
+                    <p class="calculation-result" style="top: 460px; left: 230px;">LITOW:</p>
+                    <p id="litow" class="calculation-result" style="top: 460px; left: 280px;">0</p>
+
+                    <p class="calculation-result" style="top: 480px; left: 230px;">LILAW:</p>
+                    <p id="lilaw" class="calculation-result" style="top: 480px; left: 280px;">0</p>
+
+                    <!-- Additional Information -->
+                    <p class="calculation-result" style="top: 500px;">UNDER. BEFORE LMC:</p>
+                    <p id="underBefLmc" class="calculation-result" style="top: 500px; left: 170px;">0</p>
+
+                    <p class="calculation-result" style="top: 520px;">FUEL AT DESTINATION:</p>
+                    <p id="fuelAtDest" class="calculation-result" style="top: 520px; left: 170px;">0</p>
+
+                    <p class="calculation-result" style="top: 540px;">CG ZFW:</p>
+                    <p id="cgZfw" class="calculation-result" style="top: 540px; left: 170px;">0</p>
+
+                    <p class="highlighted-result" style="top: 560px;">CG TAKE OFF:</p>
+                    <p id="cgTO" class="highlighted-result" style="top: 560px; left: 170px;">0</p>
+
+                    <p class="calculation-result" style="top: 580px;">CG LANDING:</p>
+                    <p id="cgLand" class="calculation-result" style="top: 580px; left: 170px;">0</p>
+                </div>
+
+                <!-- Graph Labels -->
+                <p style="top: 733px; left: 315px; color: #6ab0e2;">MTOW</p>
+                <p style="top: 840px; left: 330px; color: #5fdf68;">MLW</p>
+                <p style="top: 885px; left: 322px; color: #e2ca51;">MZFW</p>
+                <p style="top: 960px; left: 269px;">NO</p>
+                <p style="top: 975px; left: 262px;">TO</p>
+
+                <!-- Error Messages -->
+                <p id="bagErr" class="error-message" style="top: 200px;"></p>
+                <p id="paxErr" class="error-message" style="top: 220px;"></p>
+
+                <!-- Submit Button and Warnings -->
+                <input type="submit" class="submit-button" value="CALCULATE">
+                <p class="warning-text">FOR INFO ONLY. DO NOT USE FOR OPERATION</p>
+                <p class="copyright">© E-190 EWB / HAJIYEV RASHAD</p>
+            </form>
+
+            <!-- Canvas -->
+            <canvas id="myCanvas" width="360" height="360">
+                Your browser does not support the canvas element.
+            </canvas>
+        </div>
+    </div>
+
+    <script>
+        // PWA Registration
+        if(navigator.serviceWorker){
+            navigator.serviceWorker.register('sw.js');
+        }
+
+        const form = document.getElementById("form");
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // Constants
+            const paxWght = 84;
+            const childWght = 35;
+
+            // Get input values
+            let dow = getValue("dow");
+            let tof = getValue("tof");
+            let trip = getValue("trip");
+            let adult = getValue("adult");
+            let child = getValue("child");
+            let bag = getValue("bag");
+            let cargo = getValue("cargo");
+            let mail = getValue("mail");
+
+            // Get cabin values including children
+            let cabA = getValue("cabA");
+            let cabAChild = getValue("cabAChild") || 0;
+            let cabB = getValue("cabB");
+            let cabBChild = getValue("cabBChild") || 0;
+            let cabC = getValue("cabC");
+            let cabCChild = getValue("cabCChild") || 0;
+
+            // Weight calculations
+            let allZfw = 40900 + tof;
+            let allTow = 51800;
+            let allLw = 44000 + trip;
+
+            let oprWgt = dow + tof;
+            setValue('oprWgt', oprWgt);
+
+            let minAllWgt = Math.min(allZfw, allTow, allLw);
+
+            // Set limiting weight indicator
+            if (minAllWgt === allZfw) {
+                setValue('allZfw', `${allZfw} L`);
+                setValue('allTow', allTow);
+                setValue('allLw', allLw);
+            } else if (minAllWgt === allTow) {
+                setValue('allZfw', allZfw);
+                setValue('allTow', `${allTow} L`);
+                setValue('allLw', allLw);
+            } else if (minAllWgt === allLw) {
+                setValue('allZfw', allZfw);
+                setValue('allTow', allTow);
+                setValue('allLw', `${allLw} L`);
+            }
+
+            setValue('allTrfLoad', minAllWgt - oprWgt);
+
+            // Calculate total passenger weight including children
+            let ttlPaxWgt = (adult * paxWght) + (child * childWght);
+            setValue('ttlPaxWgt', ttlPaxWgt);
+
+            // Cargo calculations
+            let ttlBagCargoMail = bag + cargo + mail;
+            setValue('ttlBagCargoMail', ttlBagCargoMail);
+
+            if (ttlBagCargoMail > 3500) {
+                document.getElementById("ttlBagCargoMail").style.color = "red";
+                setValue('ttlBagCargoMail', `${ttlBagCargoMail}----Max. 1850 + 1650 = 3500`);
+            } else {
+                document.getElementById("ttlBagCargoMail").style.color = "#c8d7f4";
+            }
+
+            let ttlTrafLoad = ttlPaxWgt + bag + cargo + mail;
+            setValue('ttlTrafLoad', ttlTrafLoad);
+
+            // Weight calculations
+            let zeroFuelWght = ttlTrafLoad + dow;
+            setValue('zeroFuelWght', zeroFuelWght);
+
+            let takeOffWght = ttlTrafLoad + dow + tof;
+            setValue('takeOffWght', takeOffWght);
+
+            let landingWght = takeOffWght - trip;
+            setValue('landingWght', landingWght);
+
+            // Additional calculations
+            setValue('underBefLmc', minAllWgt - oprWgt - ttlTrafLoad);
+            setValue('fuelAtDest', tof - trip);
+
+            // Balance calculations
+            if (ttlBagCargoMail < 1850 && getValue("fwdCargo") >= ttlBagCargoMail) {
+                document.getElementById("fwdCargo").value = ttlBagCargoMail;
+                document.getElementById("aftCargo").value = ttlBagCargoMail - getValue("fwdCargo");
+            } else {
+                document.getElementById("aftCargo").value = ttlBagCargoMail - getValue("fwdCargo");
+            }
+
+            // Set piece count
+            if (ttlBagCargoMail === 0) {
+                setValue('fwdPcs', `? PCS`);
+                setValue('aftPcs', `? PCS`);
+            } else {
+                let pcsKG = ttlBagCargoMail / getValue("pcs");
+                setValue('fwdPcs', `${Math.round(getValue("fwdCargo") / pcsKG)} PCS`);
+                setValue('aftPcs', `${Math.round(getValue("aftCargo") / pcsKG)} PCS`);
+            }
+
+            // Balance index calculations with child weights
+            let doi = getValue("doi");
+            let fwdCarInd = rnd(doi - (getValue("fwdCargo") * 0.0156));
+            let aftCarInd = rnd(fwdCarInd + (getValue("aftCargo") * 0.0146));
+            
+            // Updated cabin indices to include child weights
+            let cabAInd = rnd(aftCarInd - ((cabA * paxWght + cabAChild * childWght) * 0.01413));
+            let cabBInd = rnd(cabAInd + ((cabB * paxWght + cabBChild * childWght) * 0.00015));
+            let cabCInd = rnd(cabBInd + ((cabC * paxWght + cabCChild * childWght) * 0.0145));
+
+            // CG calculations
+            let balArmZfw = (((cabCInd - 65) * 500) / zeroFuelWght) + 16.7;
+            let cgZfw = rnd(((balArmZfw - 15.896) * 100) / 3.682);
+            setValue('cgZfw', cgZfw);
+
+            let balArmTO = (((cabCInd + fuelIndex(tof) - 65) * 500) / takeOffWght) + 16.7;
+            let cgTO = rnd(((balArmTO - 15.896) * 100) / 3.682);
+            setValue('cgTO', cgTO);
+
+            let balArmLand = (((cabCInd + fuelIndex(tof - trip) - 65) * 500) / landingWght) + 16.7;
+            let cgLand = rnd(((balArmLand - 15.896) * 100) / 3.682);
+            setValue('cgLand', cgLand);
+
+            // Set loading indices
+            setValue('lizfw', rnd(cabCInd));
+            setValue('litow', rnd(cabCInd + fuelIndex(tof)));
+            setValue('lilaw', rnd(cabCInd + fuelIndex(tof - trip)));
+
+            // Draw canvas points
+            clearAndDrawCanvas();
+            CanvasPoint(zeroFuelWght, cabCInd, "ZFW", "#e2ca51");
+            CanvasPoint(takeOffWght, cabCInd + fuelIndex(tof), "TOW", "#6ab0e2");
+            CanvasPoint(landingWght, cabCInd + fuelIndex(tof - trip), " LW", "#5fdf68");
+            
+            // Redraw to clear artifacts
+            clearAndDrawCanvas();
+            CanvasPoint(zeroFuelWght, cabCInd, "ZFW", "#e2ca51");
+            CanvasPoint(takeOffWght, cabCInd + fuelIndex(tof), "TOW", "#6ab0e2");
+            CanvasPoint(landingWght, cabCInd + fuelIndex(tof - trip), " LW", "#5fdf68");
+
+            // Validation checks
+            if(bag + cargo + mail > 3500) {
+                setValue('bagErr', `Total Baggage must be <= 3500kg`);
+            } else {
+                setValue('bagErr', ` `);
+            }
+
+            // Updated passenger distribution check
+            if(adult + child !== 
+               (cabA + cabAChild + 
+                cabB + cabBChild + 
+                cabC + cabCChild)) {
+                setValue('paxErr', `Total PAX and Cabins PAX not equal`);
+            } else {
+                setValue('paxErr', ` `);
+            }
+        });
+
+        // Helper Functions
+        function getValue(id) {
+            return Number(document.getElementById(id).value) || 0;
+        }
+
+        function setValue(id, value) {
+            document.getElementById(id).innerHTML = value;
+        }
+
+        function rnd(value) {
+            return Math.round(value * 10) / 10;
+        }
+
+        // Include the rest of your existing helper functions here
+        // (fuelIndex, mapWeight, mapIndex, CanvasPoint, clearAndDrawCanvas)
+        
+        // Your existing fuelIndex function
+        function fuelIndex(fuel) {
+            switch (true) {
+                case Math.abs(500 - fuel) <= 250: return -1;
+                case Math.abs(1000 - fuel) <= 250: return -2;
+                case Math.abs(1500 - fuel) <= 250: return -3;
+                case Math.abs(2000 - fuel) <= 250: return -4;
+                case Math.abs(2500 - fuel) <= 250: return -5;
+                case Math.abs(3000 - fuel) <= 250: return -5;
+                case Math.abs(3500 - fuel) <= 250: return -6;
+                case Math.abs(4000 - fuel) <= 250: return -7;
+                case Math.abs(4500 - fuel) <= 250: return -8;
+                case Math.abs(5000 - fuel) <= 250: return -9;
+                case Math.abs(5500 - fuel) <= 250: return -10;
+                case Math.abs(6000 - fuel) <= 250: return -10;
+                case Math.abs(6500 - fuel) <= 250: return -11;
+                case Math.abs(7000 - fuel) <= 250: return -12;
+                case Math.abs(7500 - fuel) <= 250: return -12;
+                case Math.abs(8000 - fuel) <= 250: return -13;
+                case Math.abs(8500 - fuel) <= 250: return -14;
+                case Math.abs(9000 - fuel) <= 250: return -14;
+                case Math.abs(9500 - fuel) <= 250: return -15;
+                case Math.abs(10000 - fuel) <= 250: return -15;
+                case Math.abs(10500 - fuel) <= 250: return -14;
+                case Math.abs(11000 - fuel) <= 250: return -14;
+                case Math.abs(11500 - fuel) <= 250: return -13;
+                case Math.abs(12000 - fuel) <= 250: return -12;
+                case Math.abs(12500 - fuel) <= 250: return -10;
+                case Math.abs(13100 - fuel) <= 250: return -8;
+            }
+        }
+
+        // Canvas Functions
+        const canvasSize = 360;
+        const canvas = document.getElementById("myCanvas");
+        let ctx = canvas.getContext("2d");
+
+        function mapWeight(x, in_min = 54000, in_max = 28000, out_min = 1, out_max = canvasSize) {
+            return Math.round((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min);
+        }
+
+        function mapIndex(x, in_min = 10, in_max = 90, out_min = 1, out_max = canvasSize) {
+            return Math.round((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min);
+        }
+
+        function CanvasPoint(x, y, text, color) {
+            let wgtCor = mapWeight(x);
+            let indCor = mapIndex(y);
+
+            wgtCor = Math.min(Math.max(wgtCor, 10), 350);
+            indCor = Math.min(Math.max(indCor, 10), 350);
+
+            ctx.fillStyle = color;
+            ctx.font = "9px Times New Roman";
+            ctx.fillText(text, indCor - 9, wgtCor + 14);
+
+            ctx.beginPath();
+            ctx.arc(indCor, wgtCor, 4, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+
+        function clearAndDrawCanvas() {
+            ctx.clearRect(0, 0, canvasSize, canvasSize);
+            ctx.strokeStyle = "#2F4F4F";
+
+            function DLIW(a, b, c, d) {
+                ctx.lineWidth = 1;
+                ctx.moveTo(mapIndex(b), mapWeight(a));
+                ctx.lineTo(mapIndex(d), mapWeight(c));
+                ctx.stroke();
+            }
+
+            // Draw envelope lines
+            DLIW(48100, 19, 31500, 40);
+            DLIW(48100, 19, 51800, 32);
+            DLIW(51800, 32, 51800, 77);
+            DLIW(51800, 77, 47000, 83);
+            DLIW(47000, 83, 37000, 77);
+            DLIW(37000, 77, 28500, 61);
+            DLIW(28500, 61, 31500, 40);
+            DLIW(44000, 24, 44000, 81);  // MLW
+            DLIW(40900, 28, 40900, 79);  // MZFW
+
+            DLIW(40500, 79, 30250, 58);  // Don't use for takeoff
+            DLIW(30250, 58, 31000, 44);  // Don't use for takeoff
+
+            DLIW(51800, 57, 32750, 63);  // Alternate takeoff
+        }
+
+        // Initialize canvas
+        clearAndDrawCanvas();
+    </script>
+</body>
