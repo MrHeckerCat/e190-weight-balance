@@ -74,16 +74,34 @@
         left: 70px; /* Adjusted for centering */
         border: 1px solid #000000;
     }
+/* Add these to your existing styles */
+input::placeholder {
+    color: rgba(255, 255, 255, 0.7); /* Light white with opacity */
+    font-weight: bold;
+    opacity: 0.8;
+}
 
-    input {
-        width: 60px;
-        padding: 1px 1px 1px 3px;
-        background: rgb(98, 116, 145);
-        color: rgb(255, 255, 255);
-        font-size: 16px;
-        position: absolute;
-    }
+/* Optional: Style for when input is focused */
+input:focus::placeholder {
+    opacity: 0.5;
+}
 
+/* Update the input background color for better contrast */
+input {
+    width: 60px;
+    padding: 1px 1px 1px 3px;
+    background: rgb(58, 76, 105); /* Darker background */
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    position: absolute;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Optional: Style for when input is focused */
+input:focus {
+    background: rgb(68, 86, 115); /* Slightly lighter when focused */
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
     /* Position styles */
     .label-standard {
         left: 20px; /* Increased from 5px */
@@ -311,7 +329,7 @@
                 <!-- Submit Button and Warnings -->
                 <input type="submit" class="submit-button" value="CALCULATE">
                 <p class="warning-text">FOR INFO ONLY. DO NOT USE FOR OPERATION</p>
-                <p class="copyright">© E-190 EWB / HAJIYEV RASHAD</p>
+                <p class="copyright">E190 IGW E</p>
             </form>
 
             <!-- Canvas -->
