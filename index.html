@@ -102,6 +102,32 @@ input:focus {
     background: rgb(68, 86, 115); /* Slightly lighter when focused */
     border: 1px solid rgba(255, 255, 255, 0.4);
 }
+    /* Add these specific styles for DOW and DOI */
+#dow, #doi {
+    position: absolute;
+    z-index: 100; /* Ensure they're above other elements */
+    pointer-events: all;
+}
+
+/* Also modify the parent elements to ensure they're not blocking */
+.label-standard, .label-cabin {
+    z-index: 1;
+    pointer-events: none;
+}
+
+.input-standard, .input-cabin {
+    z-index: 100;
+    pointer-events: all;
+}
+
+/* Ensure the form and wrapper don't block */
+#form {
+    pointer-events: all;
+}
+
+.wrapper, .relative {
+    pointer-events: all;
+}
     /* Position styles */
     .label-standard {
         left: 20px; /* Increased from 5px */
@@ -588,6 +614,7 @@ function setTrim(tow, cg) {
         setValue('trim', flapOneTrim[indexTOW][indexCG]);
     }
 }
+        setTrim(takeOffWght, cgTO);
         // Canvas Functions
         const canvasSize = 360;
         const canvas = document.getElementById("myCanvas");
@@ -616,7 +643,6 @@ function setTrim(tow, cg) {
             ctx.arc(indCor, wgtCor, 4, 0, 2 * Math.PI);
             ctx.fill();
         }
-
         function clearAndDrawCanvas() {
             ctx.clearRect(0, 0, canvasSize, canvasSize);
             ctx.strokeStyle = "#2F4F4F";
