@@ -195,7 +195,7 @@ input:focus {
                 <!-- Left Column - Basic Weights -->
                 <!-- DOW input -->
 <p class="label-standard row-1">DOW</p>
-<input class="input-standard row-1" id="dow" type="number" min="28000" max="30000" required>
+<input class="input-standard row-1" id="dow" type="number" min="28000" max="30000" step="1" value="0" required>
 
                 <p class="label-standard row-2">TO FUEL</p>
                 <input class="input-standard row-2" id='tof' type="number" min="3000" max="12800" required autocomplete="off">
@@ -223,7 +223,7 @@ input:focus {
 
                 <!-- Right Column - Distribution -->
                 <p class="label-cabin row-1">DOI</p>
-<input class="input-cabin row-1" id="doi" type="number" min="65" max="85" step="0.1" required>
+<input class="input-cabin row-1" id="doi" type="number" min="65" max="85" step="0.1" value="65" required>
 
                 <p class="label-cabin row-2">FWD CRG</p>
                 <input class="input-cabin row-2" type="number" id='fwdCargo' min="0" max="1850" autocomplete="off">
@@ -357,7 +357,6 @@ input:focus {
 
             // Get input values
             let dow = getValue("dow");
-            let doi = getValue("doi");
             let tof = getValue("tof");
             let trip = getValue("trip");
             let adult = getValue("adult");
